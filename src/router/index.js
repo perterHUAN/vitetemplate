@@ -23,6 +23,14 @@ const router = createRouter({
         title: '高风险作业督导检查情况'
       }
     },
+    {
+      path: "/equipmentledgermanagement",
+      name: "equipmentledgermanagement",
+      component: () => import("../views/equipmentledgermanagement.vue"),
+      meta: {
+        title: "设备台账管理"
+      }
+    }
   ]
 })
 
