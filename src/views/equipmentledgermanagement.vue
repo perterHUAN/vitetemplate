@@ -64,6 +64,7 @@ async function saveNewEquipmentLedger(formInstance) {
   // todo: 保存新的设备台账信息
   if(!formInstance) return;
 
+  console.log("formInstance data: ", formInstance);
   await formInstance.validate(async (valid, fields) => {
     console.log("validate form: ", valid, fields);
     if(valid) {
@@ -212,6 +213,7 @@ const newEquipmentLedgerRules = {
       </el-table>
     </el-main>
   </el-container>
+  <div>
 
   <el-drawer
       v-model="showAddNewEquipmentLedgerDrawer"
@@ -354,6 +356,7 @@ const newEquipmentLedgerRules = {
       </el-form-item>
     </el-form>
   </el-drawer>
+  </div>
 </template>
 <style scoped>
 .narrow-items.el-form--inline .el-form-item {
