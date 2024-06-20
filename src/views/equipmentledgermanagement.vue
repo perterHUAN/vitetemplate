@@ -3,17 +3,33 @@ import {ref, reactive} from "vue";
 import {equipmentLedgerManagementData, e2c} from "../data/equipmentLedgerManagementData";
 import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 import {
-  formFields,
+  filterFormFields,
   workSpaceSelections,
   projectDepartmentSelections,
   majorEquipmentCategorySelections,
   equipmentNameSelections
-} from "../data/formSettings"
+} from "../data/filterFormSettings"
+import {equipmentStatusSelections} from "../data/newEquipmentLedgerSettings";
+import {ElMessageBox} from "element-plus";
+import {newEquipmentLedgerFormFields, belongedCompanySelections, equipmentTypeSelections} from "../data/newEquipmentLedgerSettings";
 
-const form = reactive(formFields);
+const filterForm = reactive(filterFormFields);
+const showAddNewEquipmentLedgerDrawer = ref(false);
+const newEquipmentLedgerForm = reactive(newEquipmentLedgerFormFields)
 
 function addNewEquipmentLedger() {
   // todo: 弹出一个侧边栏，包含一个表单，填写新设备的信息
+  // 弹出侧边栏
+  console.log("call addNewEquipmentLedger");
+  showAddNewEquipmentLedgerDrawer.value = true;
+}
+
+function handleCloseAddEquipmentLedgerDrawer(done) {
+  ElMessageBox.confirm("你真的的想要关闭它吗？").then(() => {
+    done();
+  }).catch(() => {
+    console.log("error!!!!!");
+  })
 }
 
 
@@ -22,7 +38,7 @@ function exportEquipmentLedger() {
 }
 
 // 过滤功能
-const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(form, equipmentLedgerManagementData);
+const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(filterForm, equipmentLedgerManagementData);
 queryEquipmentLedger();
 
 
@@ -35,37 +51,49 @@ function handleDelete(a, b) {
   // todo: 删除当前行
   console.log("delete current row: ", a, b);
 }
+
+function saveNewEquipmentLedger() {
+  // todo: 保存新的设备台账信息
+  // 上传，出现加载，成功之后，加载消失，退出drawer
+  console.log("save new equipment ledger", newEquipmentLedgerForm);
+
+}
+function cancelSaveEquipmentLedger() {
+  // todo: 取消保存设备台账信息
+  showAddNewEquipmentLedgerDrawer.value = false;
+}
 </script>
 <template>
   <el-container class="h-full">
     <el-header height="50px" class="flex items-center">
-      <el-form :model="form" label-suffix=":" inline size="small" class="narrow-items remove-items-margin-bottom">
+      <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items remove-items-margin-bottom">
         <el-form-item label="作业区">
-          <el-select v-model="form.workSpace" placeholder="请选择作业区" style="width: 7rem" clearable>
+          <el-select v-model="filterForm.workSpace" placeholder="请选择作业区" style="width: 7rem" clearable>
             <el-option v-for="workSpace in workSpaceSelections" :value="workSpace"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="项目部">
-          <el-select v-model="form.projectDepartment" placeholder="请选择项目部" style="width: 8.5rem" clearable>
+          <el-select v-model="filterForm.projectDepartment" placeholder="请选择项目部" style="width: 8.5rem" clearable>
             <el-option v-for="projectDepartment in projectDepartmentSelections" :value="projectDepartment"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="设备大类">
-          <el-select v-model="form.majorEquipmentCategory" placeholder="请选择设备大类" style="width: 8rem" clearable>
+          <el-select v-model="filterForm.majorEquipmentCategory" placeholder="请选择设备大类" style="width: 8rem"
+                     clearable>
             <el-option v-for="majorEquipmentCategory in majorEquipmentCategorySelections"
                        :value="majorEquipmentCategory"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="设备名称">
-          <el-select v-model="form.equipmentName" placeholder="请选择设备名称" style="width: 8rem" clearable>
+          <el-select v-model="filterForm.equipmentName" placeholder="请选择设备名称" style="width: 8rem" clearable>
             <el-option v-for="equipmentName in equipmentNameSelections" :value="equipmentName"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="自编号">
-          <el-input v-model="form.selfAssignedNumber" style="width: 7rem" clearable></el-input>
+          <el-input v-model="filterForm.selfAssignedNumber" style="width: 7rem" clearable></el-input>
         </el-form-item>
         <el-form-item label="规格型号">
-          <el-input v-model="form.specificationAndModal" style="width: 7rem" clearable></el-input>
+          <el-input v-model="filterForm.specificationAndModal" style="width: 7rem" clearable></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -103,6 +131,141 @@ function handleDelete(a, b) {
     </el-main>
   </el-container>
 
+  <el-drawer
+      v-model="showAddNewEquipmentLedgerDrawer"
+      direction="rtl"
+      :before-close="handleCloseAddEquipmentLedgerDrawer"
+      size="40%"
+      class="remove-el-drawer-header-margin-bottom"
+  >
+    <template #header>
+      <h2 class="text-center font-normal my-0 text-small">设备台账新增</h2>
+    </template>
+    <el-form v-model="newEquipmentLedgerForm" size="small" label-width="auto">
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="设备大类" required>
+            <el-select v-model="newEquipmentLedgerForm.majorEquipmentCategory" clearable>
+              <el-option v-for="majorEquipmentCategory in majorEquipmentCategorySelections" :value="majorEquipmentCategory" >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="设备名称" required>
+            <el-select v-model="newEquipmentLedgerForm.equipmentName" clearable>
+              <el-option v-for="equipmentName in equipmentNameSelections" :value="equipmentName" >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="自编号" required>
+            <el-input v-model="newEquipmentLedgerForm.selfAssignedNumber" required></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="规格型号" required>
+            <el-input v-model="newEquipmentLedgerForm.specificationAndModal" required></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="设备状态">
+            <el-select v-model="newEquipmentLedgerForm.equipmentStatus" clearable>
+              <el-option v-for="equipmentStatus in equipmentStatusSelections" :value="equipmentStatus"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="归属单位" required>
+            <el-select v-model="newEquipmentLedgerForm.belongedCompany" clearable>
+              <el-option v-for="belongedCompany in belongedCompanySelections" :value="belongedCompany"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="上次检测日期">
+            <el-date-picker
+                v-model="newEquipmentLedgerForm.lastInspectionDate"
+                type="date"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="投产日期">
+            <el-date-picker
+                v-model="newEquipmentLedgerForm.dateOfCommissioning"
+                type="date"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="下次检测日期">
+            <el-date-picker
+                v-model="newEquipmentLedgerForm.nextInspectionDate"
+                type="date"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="生产厂家">
+            <el-input v-model="newEquipmentLedgerForm.manufacturer"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-form-item label="设备类型">
+            <el-select v-model="newEquipmentLedgerForm.equipmentType" clearable>
+              <el-option v-for="equipmentType in equipmentTypeSelections" :value="equipmentType"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
+          <el-form-item label="备注">
+            <el-input type="textarea" v-model="newEquipmentLedgerForm.note" :rows="4"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col>
+          <el-form-item label="附件上传">
+            <el-upload
+                class="upload-demo"
+                drag
+                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                multiple
+                size="small"
+            >
+              <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+              <div class="el-upload__text">
+                拖拽文件至此或者<em>点击上传</em>
+              </div>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item>
+        <el-button type="primary" @click="saveNewEquipmentLedger()">保存</el-button>
+        <el-button @click="cancelSaveEquipmentLedger()">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-drawer>
 </template>
 <style scoped>
 .narrow-items.el-form--inline .el-form-item {
@@ -148,5 +311,20 @@ function handleDelete(a, b) {
 
 .text-small {
   font-size: 1rem;
+}
+.my-0 {
+  margin-block: 0;
+}
+.text-small {
+  font-size: 1rem;
+}
+.font-normal {
+  font-weight: normal;
+}
+:deep(.remove-el-drawer-header-margin-bottom .el-drawer__header)  {
+  margin-bottom: 0;
+}
+.el-drawer__header {
+  margin-bottom: 0;
 }
 </style>

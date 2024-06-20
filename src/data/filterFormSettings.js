@@ -1,4 +1,4 @@
-export const formFields = {
+export const filterFormFields = {
     workSpace: "",
     projectDepartment: "",
     majorEquipmentCategory: "",
