@@ -1,24 +1,16 @@
 <script setup>
 import {ref, reactive} from "vue";
-import mapConditionName from "../utils/mapConditionName";
-import filter from "../utils/filter";
-import {equipmentLedgerManagementData, e2c} from "../data";
+import {equipmentLedgerManagementData, e2c} from "../data/equipmentLedgerManagementData";
 import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
+import {
+  formFields,
+  workSpaceSelections,
+  projectDepartmentSelections,
+  majorEquipmentCategorySelections,
+  equipmentNameSelections
+} from "../data/formSettings"
 
-const form = reactive({
-  workSpace: "",
-  projectDepartment: "",
-  majorEquipmentCategory: "",
-  equipmentName: "",
-  selfAssignedNumber: "",
-  specificationAndModal: ""
-})
-
-const workSpaceSelections = ["纯梁工作区", "现河工作区", "临盘工作区", "东辛工作区", "滨南工作区"];
-const projectDepartmentSelections = ["郝现作业项目部", "王岗作业项目部", "现庄河作业项目部", "大修作业项目部"];
-const majorEquipmentCategorySelections = ["修井设备", "提升系统", "提升吊具", "井控设备", "安全防护设施"];
-const equipmentNameSelections = ["固定式井架", "量表", "密度计"];
-
+const form = reactive(formFields);
 
 function addNewEquipmentLedger() {
   // todo: 弹出一个侧边栏，包含一个表单，填写新设备的信息
@@ -28,7 +20,8 @@ function addNewEquipmentLedger() {
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果
 }
-// 过滤
+
+// 过滤功能
 const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(form, equipmentLedgerManagementData);
 queryEquipmentLedger();
 

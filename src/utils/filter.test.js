@@ -1,5 +1,5 @@
 import filter from "./filter";
-import {equipmentLedgerManagementData} from "../data";
+import {equipmentLedgerManagementData} from "../data/equipmentLedgerManagementData";
 import {describe, test, expect} from "vitest";
 
 describe("filter", () => {
