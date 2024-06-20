@@ -13,6 +13,12 @@ import {equipmentStatusSelections} from "../data/newEquipmentLedgerSettings";
 import {ElMessageBox, ElMessage} from "element-plus";
 import {newEquipmentLedgerFormFields, belongedCompanySelections, equipmentTypeSelections} from "../data/newEquipmentLedgerSettings";
 import sleep from "../utils/sleep";
+import useLoading from "../hooks/useLoading";
+
+const [loading, startLoading, endLoading] = useLoading();
+
+
+
 const filterForm = reactive(filterFormFields);
 const showAddNewEquipmentLedgerDrawer = ref(false);
 const newEquipmentLedgerForm = reactive(newEquipmentLedgerFormFields)
@@ -64,9 +70,9 @@ async function saveNewEquipmentLedger(formInstance) {
       console.log("submit");
       equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm))
       // 模拟: 上传加载，提示上传成功，然后关闭drawer
-      loading.value = true;
+      startLoading();
       await sleep(1);
-      loading.value = false;
+      endLoading();
 
       ElMessage({
         message: "新的设备台账信息成功上传，您现在可以点击查询获取最新的数据了!",
@@ -138,7 +144,6 @@ const newEquipmentLedgerRules = {
   ]
 }
 
-const loading = ref(false);
 </script>
 <template>
   <el-container class="h-full" v-loading="loading">
@@ -252,7 +257,7 @@ const loading = ref(false);
       </el-row>
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="设备状态">
+          <el-form-item label="设备状态" prop="equipmentStatus">
             <el-select v-model="newEquipmentLedgerForm.equipmentStatus" clearable>
               <el-option v-for="equipmentStatus in equipmentStatusSelections" :value="equipmentStatus"></el-option>
             </el-select>
@@ -268,7 +273,7 @@ const loading = ref(false);
       </el-row>
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="上次检测日期">
+          <el-form-item label="上次检测日期" prop="lastInspectionDate">
             <el-date-picker
                 v-model="newEquipmentLedgerForm.lastInspectionDate"
                 type="date"
@@ -278,7 +283,7 @@ const loading = ref(false);
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="投产日期">
+          <el-form-item label="投产日期" prop="dateOfCommissioning">
             <el-date-picker
                 v-model="newEquipmentLedgerForm.dateOfCommissioning"
                 type="date"
@@ -291,7 +296,7 @@ const loading = ref(false);
 
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="下次检测日期">
+          <el-form-item label="下次检测日期" prop="nextInspectionDate">
             <el-date-picker
                 v-model="newEquipmentLedgerForm.nextInspectionDate"
                 type="date"
@@ -301,7 +306,7 @@ const loading = ref(false);
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="生产厂家">
+          <el-form-item label="生产厂家" prop="manufacturer">
             <el-input v-model="newEquipmentLedgerForm.manufacturer"></el-input>
           </el-form-item>
         </el-col>
@@ -309,7 +314,7 @@ const loading = ref(false);
 
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="设备类型">
+          <el-form-item label="设备类型" prop="equipmentType">
             <el-select v-model="newEquipmentLedgerForm.equipmentType" clearable>
               <el-option v-for="equipmentType in equipmentTypeSelections" :value="equipmentType"></el-option>
             </el-select>
@@ -319,7 +324,7 @@ const loading = ref(false);
 
       <el-row>
         <el-col :span="24">
-          <el-form-item label="备注">
+          <el-form-item label="备注" prop="note">
             <el-input type="textarea" v-model="newEquipmentLedgerForm.note" :rows="4"></el-input>
           </el-form-item>
         </el-col>
@@ -327,7 +332,7 @@ const loading = ref(false);
 
       <el-row>
         <el-col>
-          <el-form-item label="附件上传">
+          <el-form-item label="附件上传" prop="">
             <el-upload
                 class="upload-demo"
                 drag
