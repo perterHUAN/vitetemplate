@@ -2,7 +2,8 @@
 import {ref, reactive} from "vue";
 import mapConditionName from "../utils/mapConditionName";
 import filter from "../utils/filter";
-import {equipmentLedgerManagementData, e2c } from "../data";
+import {equipmentLedgerManagementData, e2c} from "../data";
+import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 
 const form = reactive({
   workSpace: "",
@@ -27,19 +28,9 @@ function addNewEquipmentLedger() {
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果
 }
-
-const filteredEquipmentLedgerManagementData = ref();
-function queryEquipmentLedger() {
-  // todo: 查找指定的设备台账信息，更新结果页面
-  const condition = mapConditionName(toValue(form), {
-    workSpace: "inUseCompany",
-    projectDepartment: "belongedCompany"
-  })
-  const result = filter(equipmentLedgerManagementData, condition);
-  filteredEquipmentLedgerManagementData.value = result;
-}
+// 过滤
+const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(form, equipmentLedgerManagementData);
 queryEquipmentLedger();
-
 
 
 function handleEdit(a, b) {
@@ -161,6 +152,7 @@ function handleDelete(a, b) {
   background-color: #353578;
   text-align: center;
 }
+
 .text-small {
   font-size: 1rem;
 }
