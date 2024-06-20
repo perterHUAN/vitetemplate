@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive} from "vue";
+import {toRaw, ref, reactive} from "vue";
 import {equipmentLedgerManagementData, e2c} from "../data/equipmentLedgerManagementData";
 import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 import {
@@ -10,12 +10,13 @@ import {
   equipmentNameSelections
 } from "../data/filterFormSettings"
 import {equipmentStatusSelections} from "../data/newEquipmentLedgerSettings";
-import {ElMessageBox} from "element-plus";
+import {ElMessageBox, ElMessage} from "element-plus";
 import {newEquipmentLedgerFormFields, belongedCompanySelections, equipmentTypeSelections} from "../data/newEquipmentLedgerSettings";
-
+import sleep from "../utils/sleep";
 const filterForm = reactive(filterFormFields);
 const showAddNewEquipmentLedgerDrawer = ref(false);
 const newEquipmentLedgerForm = reactive(newEquipmentLedgerFormFields)
+const newEquipmentLedgerFormRef = ref(null);
 
 function addNewEquipmentLedger() {
   // todo: 弹出一个侧边栏，包含一个表单，填写新设备的信息
@@ -47,24 +48,100 @@ function handleEdit(a, b) {
   console.log("edit current row: ", a, b);
 }
 
-function handleDelete(a, b) {
+function handleDelete(idx, row) {
   // todo: 删除当前行
-  console.log("delete current row: ", a, b);
+  console.log("delete current row: ", idx, row);
+  filteredEquipmentLedgerManagementData.value.splice(idx, 1);
 }
 
-function saveNewEquipmentLedger() {
+async function saveNewEquipmentLedger(formInstance) {
   // todo: 保存新的设备台账信息
-  // 上传，出现加载，成功之后，加载消失，退出drawer
-  console.log("save new equipment ledger", newEquipmentLedgerForm);
+  if(!formInstance) return;
 
+  await formInstance.validate(async (valid, fields) => {
+    console.log("validate form: ", valid, fields);
+    if(valid) {
+      console.log("submit");
+      equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm))
+      // 模拟: 上传加载，提示上传成功，然后关闭drawer
+      loading.value = true;
+      await sleep(1);
+      loading.value = false;
+
+      ElMessage({
+        message: "新的设备台账信息成功上传，您现在可以点击查询获取最新的数据了!",
+        type: "success"
+      })
+
+      showAddNewEquipmentLedgerDrawer.value = false;
+    }else {
+      // 提示验证失败
+      console.log("error submit", fields);
+    }
+  })
+
+
+  // 上传，出现加载，成功之后，加载消失，退出drawer
+  // console.log("save new equipment ledger", newEquipmentLedgerForm, toRaw(newEquipmentLedgerForm));
+  // 模拟上传添加数据库
+  // equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm));
+  // console.log("new equipment ledger management data: ", equipmentLedgerManagementData);
+  //
+  // 更新
+  // queryEquipmentLedger();
 }
-function cancelSaveEquipmentLedger() {
+function cancelSaveEquipmentLedger(formInstance) {
   // todo: 取消保存设备台账信息
-  showAddNewEquipmentLedgerDrawer.value = false;
+  if(!formInstance) return;
+  // 清空表单
+  console.log("reset form");
+  formInstance.resetFields();
+  // 隐藏抽屉
+  // showAddNewEquipmentLedgerDrawer.value = false;
 }
+
+const newEquipmentLedgerRules = {
+  majorEquipmentCategory: [
+    {
+      required: true,
+      message: "请输入设备大类",
+      trigger: ["blur", "change"]
+    }
+  ],
+  equipmentName: [
+    {
+      required: true,
+      message: "请输入设备名称",
+      trigger: ["blur", "change"]
+    }
+  ],
+  selfAssignedNumber: [
+    {
+      required: true,
+      message: "请输入自编号",
+      trigger: "blur"
+    }
+  ],
+  specificationAndModal: [
+    {
+      required: true,
+      message: "请输入规格型号",
+      trigger: "blur"
+    }
+  ],
+  belongedCompany: [
+    {
+      required: true,
+      message: "请输入归属单位",
+      trigger: ["blur", "change"]
+    }
+  ]
+}
+
+const loading = ref(false);
 </script>
 <template>
-  <el-container class="h-full">
+  <el-container class="h-full" v-loading="loading">
     <el-header height="50px" class="flex items-center">
       <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items remove-items-margin-bottom">
         <el-form-item label="作业区">
@@ -141,10 +218,10 @@ function cancelSaveEquipmentLedger() {
     <template #header>
       <h2 class="text-center font-normal my-0 text-small">设备台账新增</h2>
     </template>
-    <el-form v-model="newEquipmentLedgerForm" size="small" label-width="auto">
+    <el-form ref="newEquipmentLedgerFormRef" :model="newEquipmentLedgerForm" size="small" label-width="auto" :rules="newEquipmentLedgerRules">
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="设备大类" required>
+          <el-form-item label="设备大类" required prop="majorEquipmentCategory">
             <el-select v-model="newEquipmentLedgerForm.majorEquipmentCategory" clearable>
               <el-option v-for="majorEquipmentCategory in majorEquipmentCategorySelections" :value="majorEquipmentCategory" >
               </el-option>
@@ -152,7 +229,7 @@ function cancelSaveEquipmentLedger() {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="设备名称" required>
+          <el-form-item label="设备名称" required prop="equipmentName">
             <el-select v-model="newEquipmentLedgerForm.equipmentName" clearable>
               <el-option v-for="equipmentName in equipmentNameSelections" :value="equipmentName" >
               </el-option>
@@ -163,12 +240,12 @@ function cancelSaveEquipmentLedger() {
 
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item label="自编号" required>
+          <el-form-item label="自编号" required prop="selfAssignedNumber">
             <el-input v-model="newEquipmentLedgerForm.selfAssignedNumber" required></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="规格型号" required>
+          <el-form-item label="规格型号" required prop="specificationAndModal">
             <el-input v-model="newEquipmentLedgerForm.specificationAndModal" required></el-input>
           </el-form-item>
         </el-col>
@@ -182,7 +259,7 @@ function cancelSaveEquipmentLedger() {
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="归属单位" required>
+          <el-form-item label="归属单位" required prop="belongedCompany">
             <el-select v-model="newEquipmentLedgerForm.belongedCompany" clearable>
               <el-option v-for="belongedCompany in belongedCompanySelections" :value="belongedCompany"></el-option>
             </el-select>
@@ -195,6 +272,8 @@ function cancelSaveEquipmentLedger() {
             <el-date-picker
                 v-model="newEquipmentLedgerForm.lastInspectionDate"
                 type="date"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
             />
           </el-form-item>
         </el-col>
@@ -203,6 +282,8 @@ function cancelSaveEquipmentLedger() {
             <el-date-picker
                 v-model="newEquipmentLedgerForm.dateOfCommissioning"
                 type="date"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
             />
           </el-form-item>
         </el-col>
@@ -214,6 +295,8 @@ function cancelSaveEquipmentLedger() {
             <el-date-picker
                 v-model="newEquipmentLedgerForm.nextInspectionDate"
                 type="date"
+                value-format="YYYY-MM-DD"
+                format="YYYY-MM-DD"
             />
           </el-form-item>
         </el-col>
@@ -261,8 +344,8 @@ function cancelSaveEquipmentLedger() {
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary" @click="saveNewEquipmentLedger()">保存</el-button>
-        <el-button @click="cancelSaveEquipmentLedger()">取消</el-button>
+        <el-button type="primary" @click="saveNewEquipmentLedger(newEquipmentLedgerFormRef)">保存</el-button>
+        <el-button @click="cancelSaveEquipmentLedger(newEquipmentLedgerFormRef)">取消</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
