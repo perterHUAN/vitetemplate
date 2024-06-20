@@ -157,8 +157,9 @@ function handleDelete(a, b) {
   text-align: center;
 }
 
-.table-header {
-  background-color: red !important;
+.el-table :deep(.table-header) {
+  background-color: #353578;
+  text-align: center;
 }
 .text-small {
   font-size: 1rem;
