@@ -6,6 +6,7 @@ function filter(data, conditions) {
             if(!(cd in rowData) || (conditions[cd] === rowData[cd] || conditions[cd] === "")) {
             }else {
                 isok = false;
+                break;
             }
         }
         if(isok) result.push(rowData);

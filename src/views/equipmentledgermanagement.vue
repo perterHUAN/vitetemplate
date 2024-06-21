@@ -10,8 +10,9 @@ import {
   equipmentNameSelections
 } from "@/data/filterFormSettings"
 import useLoading from "../hooks/useLoading";
-import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/EqupmentLedgerTable.vue"
+import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/EquipmentLedgerTable.vue"
 import AddNewEquipmentLedgerDrawer from "../components/EquipmentLedgerManagement/AddNewEquipmentLedgerDrawer.vue";
+import EquipmentLedgerControl from "@/components/EquipmentLedgerManagement/EquipmentLedgerControl.vue";
 
 const [loading, startLoading, endLoading] = useLoading();
 
@@ -56,42 +57,12 @@ function addNewEquipmentLedger(newEquipmentLedger) {
 <template>
   <el-container class="h-full" v-loading="loading">
     <el-header height="50px" class="flex items-center">
-      <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items remove-items-margin-bottom">
-        <el-form-item label="作业区">
-          <el-select v-model="filterForm.workSpace" placeholder="请选择作业区" style="width: 7rem" clearable>
-            <el-option v-for="workSpace in workSpaceSelections" :value="workSpace"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目部">
-          <el-select v-model="filterForm.projectDepartment" placeholder="请选择项目部" style="width: 8.5rem" clearable>
-            <el-option v-for="projectDepartment in projectDepartmentSelections" :value="projectDepartment"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="设备大类">
-          <el-select v-model="filterForm.majorEquipmentCategory" placeholder="请选择设备大类" style="width: 8rem"
-                     clearable>
-            <el-option v-for="majorEquipmentCategory in majorEquipmentCategorySelections"
-                       :value="majorEquipmentCategory"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="设备名称">
-          <el-select v-model="filterForm.equipmentName" placeholder="请选择设备名称" style="width: 8rem" clearable>
-            <el-option v-for="equipmentName in equipmentNameSelections" :value="equipmentName"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="自编号">
-          <el-input v-model="filterForm.selfAssignedNumber" style="width: 7rem" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="规格型号">
-          <el-input v-model="filterForm.specificationAndModal" style="width: 7rem" clearable></el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="queryEquipmentLedger()">查询</el-button>
-          <el-button type="primary" @click="openAddNewEquipmentLedgerDrawer()">新增</el-button>
-          <el-button type="primary" @click="exportEquipmentLedger()">导出</el-button>
-        </el-form-item>
-      </el-form>
+      <EquipmentLedgerControl
+          :filterForm="filterForm"
+          :queryEquipmentLedger="queryEquipmentLedger"
+          :openAddNewEquipmentLedgerDrawer="openAddNewEquipmentLedgerDrawer"
+          :exportEquipmentLedger="exportEquipmentLedger"
+      />
     </el-header>
     <el-main class="remove-padding-top">
       <h2 class="text-center text-small">设备台账管理</h2>

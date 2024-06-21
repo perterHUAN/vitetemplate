@@ -49,7 +49,8 @@ async function saveNewEquipmentLedger(formInstance) {
 
       ElMessage({
         message: "新的设备台账信息成功上传，您现在可以点击查询获取最新的数据了!",
-        type: "success"
+        type: "success",
+        duration: 1000
       })
 
       showAddNewEquipmentLedgerDrawer.value = false;

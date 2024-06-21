@@ -5,7 +5,7 @@ import mapConditionName from "../utils/mapConditionName";
 function useFilterEquipmentLedgerManagementData(form, equipmentLedgerManagementData) {
     const filteredEquipmentLedgerManagementData = ref();
     function getCurrentCondition() {
-        const condition = mapConditionName(toValue(form), {
+        const condition = mapConditionName(toRaw(form), {
             workSpace: "inUseCompany",
             projectDepartment: "belongedCompany"
         })
