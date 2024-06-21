@@ -49,7 +49,7 @@ async function saveEditedEquipmentLedger(formInstance) {
       console.log("submit");
       // todo: 需要对表单数据进行处理
 
-      postEditedEquipmentLedger(extractNewEquipmentLedgerFormData(newEquipmentLedgerForm));
+      postEditedEquipmentLedger(extractNewEquipmentLedgerFormData(editingEquipmentLedgerForm));
       // 模拟: 上传加载，提示上传成功，然后关闭drawer
       startLoading();
       await sleep(1);

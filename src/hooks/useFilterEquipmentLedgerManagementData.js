@@ -15,6 +15,7 @@ function useFilterEquipmentLedgerManagementData(form, equipmentLedgerManagementD
     function queryEquipmentLedger() {
         // todo: 查找指定的设备台账信息，更新结果页面
         const result = filter(equipmentLedgerManagementData, getCurrentCondition());
+        console.log("query equipment ledger", equipmentLedgerManagementData, getCurrentCondition(), result);
         filteredEquipmentLedgerManagementData.value = result;
     }
     return [filteredEquipmentLedgerManagementData, queryEquipmentLedger];

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive} from "vue";
+import { reactive} from "vue";
 import {equipmentLedgerManagementData} from "@/data/equipmentLedgerManagementData";
 import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 import {
@@ -11,6 +11,7 @@ import AddNewEquipmentLedgerDrawer from "../components/EquipmentLedgerManagement
 import EquipmentLedgerControl from "@/components/EquipmentLedgerManagement/EquipmentLedgerControl.vue";
 import EditEquipmentLedgerDrawer from "@/components/EquipmentLedgerManagement/EditEquipmentLedgerDrawer.vue";
 import useDrawer from "@/hooks/useDrawer";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const [loading, startLoading, endLoading] = useLoading();
 
@@ -18,21 +19,36 @@ const filterForm = reactive(filterFormFields);
 const [showAddNewEquipmentLedgerDrawer, closeAddNewEquipmentLedgerDrawer, openAddNewEquipmentLedgerDrawer ] = useDrawer();
 const [showEditEquipmentLedgerDrawer,closeEditEquipmentLedgerDrawer,openEditEquipmentLedgerDrawer] = useDrawer();
 
+// 当前编辑的台账信息
 let editingEquipmentLedgerForm = null;
-
-
-function postEditedEquipmentLedger() {
-  // todo: 递交修改
-  console.log("递交修改待完成....");
-}
-
-function exportEquipmentLedger() {
-  // todo: 导出当前的查询结果
-}
-
 // 过滤功能
 const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(filterForm, equipmentLedgerManagementData);
 queryEquipmentLedger();
+
+
+function postEditedEquipmentLedger(editedEquipmentLedger) {
+  // todo: 递交修改
+  console.log("递交修改待完成....");
+  // 删除原来的，添加新的
+  const deletedIndex = equipmentLedgerManagementData.findIndex(e => e.id === editedEquipmentLedger.id);
+  if(!deletedIndex) return; // 不存在，直接终止
+  equipmentLedgerManagementData.splice(deletedIndex, 1);
+  equipmentLedgerManagementData.push(editedEquipmentLedger);
+}
+
+function deleteEquipmentLedger(id) {
+  // todo: 删除指定id的数据
+  const deletedIndex = equipmentLedgerManagementData.findIndex(e => e.id === id);
+  if(deletedIndex !== -1) {
+    equipmentLedgerManagementData.splice(deletedIndex, 1);
+  }
+}
+
+function exportEquipmentLedger() {
+  // todo: 导出当前的查询结果 filter
+
+}
+
 
 function handleEdit(idx, row) {
   // todo: 编辑当前行
@@ -44,7 +60,29 @@ function handleEdit(idx, row) {
 function handleDelete(idx, row) {
   // todo: 删除当前行
   console.log("delete current row: ", idx, row);
-  filteredEquipmentLedgerManagementData.value.splice(idx, 1);
+  // 提示信息
+  ElMessageBox.confirm(
+      "你确定要删除该项设备台账记录吗?",
+      "警告",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }
+  ).then(() => {
+    deleteEquipmentLedger(row.id);
+
+    ElMessage({
+      type: "success",
+      message: "删除成功"
+    })
+    queryEquipmentLedger();
+  }).catch(() => {
+    ElMessage({
+      type: "info",
+      message: "删除失败"
+    })
+  })
 }
 
 function addNewEquipmentLedger(newEquipmentLedger) {
