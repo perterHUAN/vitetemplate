@@ -59,7 +59,37 @@ function handleDelete(idx, row) {
   console.log("delete current row: ", idx, row);
   filteredEquipmentLedgerManagementData.value.splice(idx, 1);
 }
+function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
+   const {
+     majorEquipmentCategory,
+     equipmentName,
+     equipmentType,
+     selfAssignedNumber,
+     specificationAndModal,
+     belongedCompany,
+     inUseCompany,
+     manufacturer,
+     lastInspectionDate,
+     nextInspectionDate,
+     dateOfCommissioning,
+     equipmentStatus
+   } = newEquipmentLedgerForm;
 
+   return  {
+     majorEquipmentCategory,
+     equipmentName,
+     equipmentType,
+     selfAssignedNumber,
+     specificationAndModal,
+     belongedCompany,
+     inUseCompany,
+     manufacturer,
+     lastInspectionDate,
+     nextInspectionDate,
+     dateOfCommissioning,
+     equipmentStatus
+   }
+}
 async function saveNewEquipmentLedger(formInstance) {
   // todo: 保存新的设备台账信息
   if(!formInstance) return;
@@ -69,7 +99,10 @@ async function saveNewEquipmentLedger(formInstance) {
     console.log("validate form: ", valid, fields);
     if(valid) {
       console.log("submit");
-      equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm))
+      // todo: 需要对表单数据进行处理
+
+      equipmentLedgerManagementData.push(extractNewEquipmentLedgerFormData(newEquipmentLedgerForm));
+      // equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm))
       // 模拟: 上传加载，提示上传成功，然后关闭drawer
       startLoading();
       await sleep(1);
@@ -81,21 +114,13 @@ async function saveNewEquipmentLedger(formInstance) {
       })
 
       showAddNewEquipmentLedgerDrawer.value = false;
+      formInstance.resetFields();
     }else {
       // 提示验证失败
       console.log("error submit", fields);
     }
   })
 
-
-  // 上传，出现加载，成功之后，加载消失，退出drawer
-  // console.log("save new equipment ledger", newEquipmentLedgerForm, toRaw(newEquipmentLedgerForm));
-  // 模拟上传添加数据库
-  // equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm));
-  // console.log("new equipment ledger management data: ", equipmentLedgerManagementData);
-  //
-  // 更新
-  // queryEquipmentLedger();
 }
 function cancelSaveEquipmentLedger(formInstance) {
   // todo: 取消保存设备台账信息
@@ -213,8 +238,8 @@ const newEquipmentLedgerRules = {
       </el-table>
     </el-main>
   </el-container>
-  <div>
 
+  <div>
   <el-drawer
       v-model="showAddNewEquipmentLedgerDrawer"
       direction="rtl"
