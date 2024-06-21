@@ -9,12 +9,26 @@ import useLoading from "../hooks/useLoading";
 import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/EquipmentLedgerTable.vue"
 import AddNewEquipmentLedgerDrawer from "../components/EquipmentLedgerManagement/AddNewEquipmentLedgerDrawer.vue";
 import EquipmentLedgerControl from "@/components/EquipmentLedgerManagement/EquipmentLedgerControl.vue";
+import EditEquipmentLedgerDrawer from "@/components/EquipmentLedgerManagement/EditEquipmentLedgerDrawer.vue";
 
 const [loading, startLoading, endLoading] = useLoading();
 
 const filterForm = reactive(filterFormFields);
 const showAddNewEquipmentLedgerDrawer = ref(false);
+const showEditEquipmentLedgerDrawer = ref(false);
+let editingEquipmentLedgerForm = null;
 
+function closeEditEquipmentLedgerDrawer() {
+  showEditEquipmentLedgerDrawer.value = false;
+}
+function openEditEquipmentLedgerDrawer() {
+  showEditEquipmentLedgerDrawer.value = true;
+}
+
+function postEditedEquipmentLedger() {
+  // todo: 递交修改
+  console.log("递交修改待完成....");
+}
 function openAddNewEquipmentLedgerDrawer() {
   // todo: 弹出一个侧边栏，包含一个表单，填写新设备的信息
   // 弹出侧边栏
@@ -36,6 +50,8 @@ queryEquipmentLedger();
 function handleEdit(idx, row) {
   // todo: 编辑当前行
   console.log("edit current row: ", idx, row);
+  editingEquipmentLedgerForm = row;
+  openEditEquipmentLedgerDrawer();
 }
 
 function handleDelete(idx, row) {
@@ -73,6 +89,14 @@ function addNewEquipmentLedger(newEquipmentLedger) {
       :endLoading="endLoading"
       v-model:showAddNewEquipmentLedgerDrawer="showAddNewEquipmentLedgerDrawer"/>
 
+  <EditEquipmentLedgerDrawer
+    :startLoading="startLoading"
+    :endLoading="endLoading"
+    :postEditedEquipmentLedger="postEditedEquipmentLedger"
+    :editingEquipmentLedgerForm="editingEquipmentLedgerForm"
+    :closeEditEquipmentLedgerDrawer="closeEditEquipmentLedgerDrawer"
+    v-model:showEditEquipmentLedgerDrawer="showEditEquipmentLedgerDrawer"
+  />
 </template>
 <style scoped>
 .-mt-10.el-main {
