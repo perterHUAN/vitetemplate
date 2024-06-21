@@ -1,3 +1,5 @@
+import generateRandomId from "@/utils/generateRandomId";
+
 function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
     const {
         majorEquipmentCategory,
@@ -26,7 +28,8 @@ function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
         lastInspectionDate,
         nextInspectionDate,
         dateOfCommissioning,
-        equipmentStatus
+        equipmentStatus,
+        id: generateRandomId()
     }
 }
 

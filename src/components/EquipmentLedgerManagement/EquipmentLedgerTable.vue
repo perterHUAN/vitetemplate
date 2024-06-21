@@ -1,20 +1,21 @@
 <script setup>
-import {e2c, equipmentLedgerManagementDataFormAlign} from "@/data/equipmentLedgerManagementData"
+import {e2c, equipmentLedgerManagementDataFormColumnStyle} from "@/data/equipmentLedgerManagementData"
 
 defineProps(["filteredEquipmentLedgerManagementData", "handleDelete", "handleEdit"])
 </script>
 <template>
   <el-table
       :data="filteredEquipmentLedgerManagementData" class="custom-table" size="small" border
-      header-cell-class-name="table-header-cell" cell-class-name="table-body-cell">
+      header-cell-class-name="table-header-cell" cell-class-name="single-line-ellipsis">
     <el-table-column type="index" label="序号" align="center"/>
     <el-table-column v-for="columnName in Object.keys(e2c)"
                      :property="columnName"
                      :label="e2c[columnName]"
-                     :align="equipmentLedgerManagementDataFormAlign[columnName].align"
-                     :headerAlign="equipmentLedgerManagementDataFormAlign[columnName].headerAlign"
+                     :align="equipmentLedgerManagementDataFormColumnStyle[columnName].align"
+                     :headerAlign="equipmentLedgerManagementDataFormColumnStyle[columnName].headerAlign"
+                     :width="equipmentLedgerManagementDataFormColumnStyle[columnName].width"
     ></el-table-column>
-    <el-table-column label="操作" align="center" headerAlign="center">
+    <el-table-column label="操作" align="center" headerAlign="center" width="100px">
       <template
           #default="scope">
         <el-button
@@ -47,6 +48,13 @@ defineProps(["filteredEquipmentLedgerManagementData", "handleDelete", "handleEdi
 
 .custom-table.el-table {
   --el-table-border-color: #408fca;
+}
+
+:deep(.single-line-ellipsis .cell) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
 }
 
 /*

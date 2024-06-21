@@ -1,5 +1,6 @@
 export const equipmentLedgerManagementData = [
     {
+        id: 1,
         majorEquipmentCategory: "提升系统",
         equipmentName: "固定式井架",
         equipmentType: null,
@@ -14,6 +15,7 @@ export const equipmentLedgerManagementData = [
         equipmentStatus: "送修"
     },
     {
+        id: 2,
         majorEquipmentCategory: "修井设备",
         equipmentName: "量表",
         equipmentType: null,
@@ -28,6 +30,7 @@ export const equipmentLedgerManagementData = [
         equipmentStatus: "送修"
     },
     {
+        id: 3,
         majorEquipmentCategory: "提升吊具",
         equipmentName: "密度计",
         equipmentType: null,
@@ -42,6 +45,7 @@ export const equipmentLedgerManagementData = [
         equipmentStatus: "送修"
     },
     {
+        id: 4,
         majorEquipmentCategory: "修井设备",
         equipmentName: "密度计",
         equipmentType: null,
@@ -55,55 +59,82 @@ export const equipmentLedgerManagementData = [
         dateOfCommissioning: "2012-05-11",
         equipmentStatus: "送修"
     },
+    {
+        id: 5,
+        majorEquipmentCategory: "修井设备",
+        equipmentName: "密度计",
+        equipmentType: null,
+        selfAssignedNumber: "XHXY-28-5",
+        specificationAndModal: "JJ50/19W",
+        belongedCompany: "现庄河作业项目部",
+        inUseCompany: null,
+        manufacturer: "胜利油田胜机设备安全有限公司",
+        lastInspectionDate: "2021-08-16",
+        nextInspectionDate: "2023-08-26",
+        dateOfCommissioning: "2012-05-11",
+        equipmentStatus: "送修",
+    },
 ]
-export const equipmentLedgerManagementDataFormAlign = {
+export const equipmentLedgerManagementDataFormColumnStyle = {
     majorEquipmentCategory: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     equipmentName: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     equipmentType: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     selfAssignedNumber: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     specificationAndModal: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     belongedCompany: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: "150px"
     },
     inUseCompany: {
         align: "center",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     manufacturer: {
         align: "left",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: "150px"
     },
     lastInspectionDate: {
         align: "center",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     nextInspectionDate: {
         align: "center",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     dateOfCommissioning: {
         align: "center",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     },
     equipmentStatus: {
         align: "center",
-        headerAlign: "center"
+        headerAlign: "center",
+        width: ""
     }
 }
 export const e2c = {

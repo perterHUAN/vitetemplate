@@ -1,5 +1,4 @@
 <script setup>
-
 import {
   workSpaceSelections,
   projectDepartmentSelections,
@@ -10,7 +9,7 @@ import {
 defineProps(["filterForm", "queryEquipmentLedger", "openAddNewEquipmentLedgerDrawer", "exportEquipmentLedger"])
 </script>
 <template>
-  <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items remove-items-margin-bottom">
+  <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items mb-0">
     <el-form-item label="作业区">
       <el-select v-model="filterForm.workSpace" placeholder="请选择作业区" style="width: 7rem" clearable>
         <el-option v-for="workSpace in workSpaceSelections" :value="workSpace"></el-option>
@@ -56,7 +55,7 @@ defineProps(["filterForm", "queryEquipmentLedger", "openAddNewEquipmentLedgerDra
   margin-right: 0;
 }
 
-.remove-items-margin-bottom.el-form--inline .el-form-item {
+.mb-0.el-form--inline .el-form-item {
   margin-bottom: 0;
 }
 

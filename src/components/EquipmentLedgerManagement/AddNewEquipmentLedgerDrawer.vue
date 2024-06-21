@@ -41,7 +41,6 @@ async function saveNewEquipmentLedger(formInstance) {
       // todo: 需要对表单数据进行处理
 
        addNewEquipmentLedger(extractNewEquipmentLedgerFormData(newEquipmentLedgerForm));
-      // equipmentLedgerManagementData.push(toRaw(newEquipmentLedgerForm))
       // 模拟: 上传加载，提示上传成功，然后关闭drawer
       startLoading();
       await sleep(1);

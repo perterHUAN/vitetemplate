@@ -4,10 +4,6 @@ import {equipmentLedgerManagementData} from "@/data/equipmentLedgerManagementDat
 import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 import {
   filterFormFields,
-  workSpaceSelections,
-  projectDepartmentSelections,
-  majorEquipmentCategorySelections,
-  equipmentNameSelections
 } from "@/data/filterFormSettings"
 import useLoading from "../hooks/useLoading";
 import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/EquipmentLedgerTable.vue"
@@ -37,9 +33,9 @@ const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterE
 queryEquipmentLedger();
 
 
-function handleEdit(a, b) {
+function handleEdit(idx, row) {
   // todo: 编辑当前行
-  console.log("edit current row: ", a, b);
+  console.log("edit current row: ", idx, row);
 }
 
 function handleDelete(idx, row) {
@@ -64,7 +60,7 @@ function addNewEquipmentLedger(newEquipmentLedger) {
           :exportEquipmentLedger="exportEquipmentLedger"
       />
     </el-header>
-    <el-main class="remove-padding-top">
+    <el-main class="pt-0 -mt-10">
       <h2 class="text-center text-small">设备台账管理</h2>
       <EquipmentLedgerTable :filteredEquipmentLedgerManagementData="filteredEquipmentLedgerManagementData"
                             :handleEdit="handleEdit" :handleDelete="handleDelete"/>
@@ -79,19 +75,11 @@ function addNewEquipmentLedger(newEquipmentLedger) {
 
 </template>
 <style scoped>
-.remove-padding-top.el-main {
+.-mt-10.el-main {
+  margin-top: -10px;
+}
+.pt-0.el-main{
   padding-top: 0;
-}
-.narrow-items.el-form--inline .el-form-item {
-  margin-right: 10px;
-}
-
-.narrow-items.el-form--inline .el-form-item:last-child {
-  margin-right: 0;
-}
-
-.remove-items-margin-bottom.el-form--inline .el-form-item {
-  margin-bottom: 0;
 }
 
 .flex {
@@ -110,15 +98,9 @@ function addNewEquipmentLedger(newEquipmentLedger) {
   height: 100vh;
 }
 
-.operation-button {
-  color: blue;
-}
-
 .text-center {
   text-align: center;
 }
-
-
 
 .text-small {
   font-size: 1rem;
@@ -131,7 +113,5 @@ function addNewEquipmentLedger(newEquipmentLedger) {
 .text-small {
   font-size: 1rem;
 }
-
-
 
 </style>
