@@ -56,6 +56,56 @@ export const equipmentLedgerManagementData = [
         equipmentStatus: "送修"
     },
 ]
+export const equipmentLedgerManagementDataFormAlign = {
+    majorEquipmentCategory: {
+        align: "left",
+        headerAlign: "center"
+    },
+    equipmentName: {
+        align: "left",
+        headerAlign: "center"
+    },
+    equipmentType: {
+        align: "left",
+        headerAlign: "center"
+    },
+    selfAssignedNumber: {
+        align: "left",
+        headerAlign: "center"
+    },
+    specificationAndModal: {
+        align: "left",
+        headerAlign: "center"
+    },
+    belongedCompany: {
+        align: "left",
+        headerAlign: "center"
+    },
+    inUseCompany: {
+        align: "center",
+        headerAlign: "center"
+    },
+    manufacturer: {
+        align: "left",
+        headerAlign: "center"
+    },
+    lastInspectionDate: {
+        align: "center",
+        headerAlign: "center"
+    },
+    nextInspectionDate: {
+        align: "center",
+        headerAlign: "center"
+    },
+    dateOfCommissioning: {
+        align: "center",
+        headerAlign: "center"
+    },
+    equipmentStatus: {
+        align: "center",
+        headerAlign: "center"
+    }
+}
 export const e2c = {
     majorEquipmentCategory: "设备大类",
     equipmentName: "设备名称",

@@ -93,7 +93,7 @@ function addNewEquipmentLedger(newEquipmentLedger) {
         </el-form-item>
       </el-form>
     </el-header>
-    <el-main>
+    <el-main class="remove-padding-top">
       <h2 class="text-center text-small">设备台账管理</h2>
       <EquipmentLedgerTable :filteredEquipmentLedgerManagementData="filteredEquipmentLedgerManagementData"
                             :handleEdit="handleEdit" :handleDelete="handleDelete"/>
@@ -108,6 +108,9 @@ function addNewEquipmentLedger(newEquipmentLedger) {
 
 </template>
 <style scoped>
+.remove-padding-top.el-main {
+  padding-top: 0;
+}
 .narrow-items.el-form--inline .el-form-item {
   margin-right: 10px;
 }
@@ -144,10 +147,7 @@ function addNewEquipmentLedger(newEquipmentLedger) {
   text-align: center;
 }
 
-.el-table :deep(.table-header) {
-  background-color: #353578;
-  text-align: center;
-}
+
 
 .text-small {
   font-size: 1rem;
