@@ -14,10 +14,11 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import sleep from "../../utils/sleep";
 import extractNewEquipmentLedgerFormData from "../../utils/extractNewEquipmentLedgerFormData";
 const showAddNewEquipmentLedgerDrawer = defineModel("showAddNewEquipmentLedgerDrawer")
-const {startLoading, endLoading, addNewEquipmentLedger} = defineProps([
+const {startLoading, endLoading, addNewEquipmentLedger, closeAddNewEquipmentLedgerDrawer} = defineProps([
     "startLoading",
     "endLoading",
-    "addNewEquipmentLedger"
+    "addNewEquipmentLedger",
+    "closeAddNewEquipmentLedgerDrawer"
 ])
 // const showAddNewEquipmentLedgerDrawer = ref(false);
 const newEquipmentLedgerForm = reactive(newEquipmentLedgerFormFields)
@@ -52,7 +53,8 @@ async function saveNewEquipmentLedger(formInstance) {
         duration: 1000
       })
 
-      showAddNewEquipmentLedgerDrawer.value = false;
+      // showAddNewEquipmentLedgerDrawer.value = false;
+      closeAddNewEquipmentLedgerDrawer();
       formInstance.resetFields();
     } else {
       // 提示验证失败
@@ -253,10 +255,12 @@ const newEquipmentLedgerRules = {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item>
-          <el-button type="primary" @click="saveNewEquipmentLedger(newEquipmentLedgerFormRef)">保存</el-button>
-          <el-button @click="cancelSaveEquipmentLedger(newEquipmentLedgerFormRef)">取消</el-button>
-        </el-form-item>
+        <el-row justify="end">
+          <el-form-item>
+            <el-button type="primary" @click="saveNewEquipmentLedger(newEquipmentLedgerFormRef)">保存</el-button>
+            <el-button @click="cancelSaveEquipmentLedger(newEquipmentLedgerFormRef)">取消</el-button>
+          </el-form-item>
+        </el-row>
       </el-form>
     </el-drawer>
   </div>

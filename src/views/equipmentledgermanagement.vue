@@ -10,33 +10,21 @@ import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/Equipm
 import AddNewEquipmentLedgerDrawer from "../components/EquipmentLedgerManagement/AddNewEquipmentLedgerDrawer.vue";
 import EquipmentLedgerControl from "@/components/EquipmentLedgerManagement/EquipmentLedgerControl.vue";
 import EditEquipmentLedgerDrawer from "@/components/EquipmentLedgerManagement/EditEquipmentLedgerDrawer.vue";
+import useDrawer from "@/hooks/useDrawer";
 
 const [loading, startLoading, endLoading] = useLoading();
 
 const filterForm = reactive(filterFormFields);
-const showAddNewEquipmentLedgerDrawer = ref(false);
-const showEditEquipmentLedgerDrawer = ref(false);
+const [showAddNewEquipmentLedgerDrawer, closeAddNewEquipmentLedgerDrawer, openAddNewEquipmentLedgerDrawer ] = useDrawer();
+const [showEditEquipmentLedgerDrawer,closeEditEquipmentLedgerDrawer,openEditEquipmentLedgerDrawer] = useDrawer();
+
 let editingEquipmentLedgerForm = null;
 
-function closeEditEquipmentLedgerDrawer() {
-  showEditEquipmentLedgerDrawer.value = false;
-}
-function openEditEquipmentLedgerDrawer() {
-  showEditEquipmentLedgerDrawer.value = true;
-}
 
 function postEditedEquipmentLedger() {
   // todo: 递交修改
   console.log("递交修改待完成....");
 }
-function openAddNewEquipmentLedgerDrawer() {
-  // todo: 弹出一个侧边栏，包含一个表单，填写新设备的信息
-  // 弹出侧边栏
-  console.log("call addNewEquipmentLedger");
-  showAddNewEquipmentLedgerDrawer.value = true;
-}
-
-
 
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果
@@ -45,7 +33,6 @@ function exportEquipmentLedger() {
 // 过滤功能
 const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(filterForm, equipmentLedgerManagementData);
 queryEquipmentLedger();
-
 
 function handleEdit(idx, row) {
   // todo: 编辑当前行
@@ -87,6 +74,7 @@ function addNewEquipmentLedger(newEquipmentLedger) {
       :addNewEquipmentLedger="addNewEquipmentLedger"
       :startLoading="startLoading"
       :endLoading="endLoading"
+      :closeAddNewEquipmentLedgerDrawer="closeAddNewEquipmentLedgerDrawer"
       v-model:showAddNewEquipmentLedgerDrawer="showAddNewEquipmentLedgerDrawer"/>
 
   <EditEquipmentLedgerDrawer
