@@ -10,7 +10,11 @@ import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      script: {
+        defineModel: true
+      }
+    }),
     AutoImport({
       imports: ['vue'],
       resolvers: [ElementPlusResolver()],
