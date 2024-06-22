@@ -1,10 +1,10 @@
 import {equipmentLedgerManagementData} from "@/data/equipmentLedgerManagementData";
-import {sleep} from "@/utils";
+import {sleep, generateRandomId, extractEditedEquipmentLedgerFormData, extractNewEquipmentLedgerFormData} from "@/utils";
 
 // 过滤操作呢？本地执行过滤，不需要再发起请求
 async function queryAll() {
     await sleep(1);
-    return equipmentLedgerManagementData;
+    return {status: 200, data: JSON.parse(JSON.stringify(equipmentLedgerManagementData))};
 }
 
 async function postEditedEquipmentLedger(editedEquipmentLedger) {
@@ -12,14 +12,13 @@ async function postEditedEquipmentLedger(editedEquipmentLedger) {
     await sleep(1);
     console.log("递交修改待完成....");
     // 删除原来的，添加新的
+    editedEquipmentLedger = extractEditedEquipmentLedgerFormData(editedEquipmentLedger);
     const deletedIndex = equipmentLedgerManagementData.findIndex(e => e.id === editedEquipmentLedger.id);
     if(!deletedIndex) return; // 不存在，直接终止
-    editedEquipmentLedger.id = generateRandomId();
     equipmentLedgerManagementData.splice(deletedIndex, 1);
     equipmentLedgerManagementData.push(editedEquipmentLedger);
 
-    // 返回新的数据, 带有服务端生成的id
-    return equipmentLedgerManagementData;
+    return {status: 200, data: JSON.parse(JSON.stringify(editedEquipmentLedger))}
 }
 
 // 不管返回结果怎么样，本地的都会删除
@@ -30,13 +29,26 @@ async function deleteEquipmentLedger(id) {
     if(deletedIndex !== -1) {
         equipmentLedgerManagementData.splice(deletedIndex, 1);
     }
+    return {status: 200}
+}
+
+async function addNewEquipmentLedger(newEquipmentLedger) {
+    console.log("receive new equipment ledger: ", newEquipmentLedger);
+    // todo: 添加新数据
+    // 模拟上传到服务端数据库
+    await sleep(1);
+    newEquipmentLedger = extractNewEquipmentLedgerFormData(newEquipmentLedger);
+    console.log("添加新数据", newEquipmentLedger);
+    equipmentLedgerManagementData.push(newEquipmentLedger);
+
+    return {status: 200, data: JSON.parse(JSON.stringify(newEquipmentLedger))};
 }
 
 
 
-
-export {
+export default {
     queryAll,
     postEditedEquipmentLedger,
-    deleteEquipmentLedger
+    deleteEquipmentLedger,
+    addNewEquipmentLedger
 }

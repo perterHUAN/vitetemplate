@@ -13,6 +13,7 @@ import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import sleep from "../../utils/sleep";
 import extractEditedEquipmentLedgerFormData from "@/utils/extractEidtedEquipmentLedgerFormData";
+import Service from "@/mock/service.js";
 
 const showEditEquipmentLedgerDrawer = defineModel("showEditEquipmentLedgerDrawer")
 const {
@@ -20,13 +21,15 @@ const {
   endLoading,
   postEditedEquipmentLedger,
   editingEquipmentLedgerForm,
-  closeEditEquipmentLedgerDrawer
+  closeEditEquipmentLedgerDrawer,
+  updateLocalEquipmentLedgerManagementData
 } = defineProps([
   "startLoading",
   "endLoading",
   "postEditedEquipmentLedger",
   "editingEquipmentLedgerForm",
-  "closeEditEquipmentLedgerDrawer"
+  "closeEditEquipmentLedgerDrawer",
+  "updateLocalEquipmentLedgerManagementData"
 ])
 const editingEquipmentLedgerFormRef = ref(null);
 
@@ -51,10 +54,10 @@ async function saveEditedEquipmentLedger(formInstance) {
 
       try {
         console.log("editingEquipmentLedgerForm: ", editingEquipmentLedgerForm);
-        postEditedEquipmentLedger(extractEditedEquipmentLedgerFormData(editingEquipmentLedgerForm));
         // 模拟: 上传加载，提示上传成功，然后关闭drawer
         startLoading();
-        await sleep(1);
+        const response = await Service.postEditedEquipmentLedger(editingEquipmentLedgerForm);
+        updateLocalEquipmentLedgerManagementData(response.data);
         endLoading();
 
         ElMessage({

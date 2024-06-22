@@ -9,20 +9,20 @@ import {
   equipmentStatusSelections, newEquipmentLedgerFormFields
 } from "@/data/newEquipmentLedgerSettings";
 import {UploadFilled} from '@element-plus/icons-vue'
-import {reactive, ref} from "vue";
+import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import sleep from "../../utils/sleep";
-import extractNewEquipmentLedgerFormData from "../../utils/extractNewEquipmentLedgerFormData";
+import Service from "@/mock/service";
+
 const showAddNewEquipmentLedgerDrawer = defineModel("showAddNewEquipmentLedgerDrawer")
-const {startLoading, endLoading, addNewEquipmentLedger, closeAddNewEquipmentLedgerDrawer} = defineProps([
-    "startLoading",
-    "endLoading",
-    "addNewEquipmentLedger",
-    "closeAddNewEquipmentLedgerDrawer"
+const {startLoading, endLoading, addLocalEquipmentLedgerManagementData, closeAddNewEquipmentLedgerDrawer} = defineProps([
+  "startLoading",
+  "endLoading",
+  "closeAddNewEquipmentLedgerDrawer",
+   "addLocalEquipmentLedgerManagementData"
 ])
-// const showAddNewEquipmentLedgerDrawer = ref(false);
-const newEquipmentLedgerForm = reactive(newEquipmentLedgerFormFields)
+const newEquipmentLedgerForm = ref(newEquipmentLedgerFormFields)
 const newEquipmentLedgerFormRef = ref(null);
+
 function handleCloseAddEquipmentLedgerDrawer(done) {
   ElMessageBox.confirm("你真的的想要关闭它吗？").then(() => {
     done();
@@ -30,6 +30,7 @@ function handleCloseAddEquipmentLedgerDrawer(done) {
     console.log("error!!!!!");
   })
 }
+
 async function saveNewEquipmentLedger(formInstance) {
   // todo: 保存新的设备台账信息
   if (!formInstance) return;
@@ -41,10 +42,12 @@ async function saveNewEquipmentLedger(formInstance) {
       console.log("submit");
       // todo: 需要对表单数据进行处理
 
-       addNewEquipmentLedger(extractNewEquipmentLedgerFormData(newEquipmentLedgerForm));
       // 模拟: 上传加载，提示上传成功，然后关闭drawer
       startLoading();
-      await sleep(1);
+      console.log("local new equipment", newEquipmentLedgerForm.value);
+      const response = await Service.addNewEquipmentLedger(newEquipmentLedgerForm.value);
+      console.log("add new equipment ledger response: ", response);
+      addLocalEquipmentLedgerManagementData(response.data);
       endLoading();
 
       ElMessage({
@@ -52,11 +55,15 @@ async function saveNewEquipmentLedger(formInstance) {
         type: "success",
         duration: 1000
       })
-
       closeAddNewEquipmentLedgerDrawer();
       formInstance.resetFields();
     } else {
       // 提示验证失败
+      ElMessage({
+        message:"验证失败",
+        type:"error",
+        duration: 1000
+      })
       console.log("error submit", fields);
     }
   })
@@ -268,12 +275,15 @@ const newEquipmentLedgerRules = {
 :deep(.remove-el-drawer-header-margin-bottom .el-drawer__header) {
   margin-bottom: 0;
 }
+
 .text-center {
   text-align: center;
 }
+
 .text-small {
   font-size: 1rem;
 }
+
 .font-normal {
   font-weight: normal;
 }

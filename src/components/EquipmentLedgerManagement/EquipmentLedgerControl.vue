@@ -5,8 +5,15 @@ import {
   majorEquipmentCategorySelections,
   equipmentNameSelections
 } from "@/data/filterFormSettings"
+import {sleep} from "@/utils"
 
-defineProps(["filterForm", "queryEquipmentLedger", "openAddNewEquipmentLedgerDrawer", "exportEquipmentLedger"])
+const {filterEquipmentLedger, startLoading, endLoading } = defineProps(["startLoading", "endLoading", "filterForm", "filterEquipmentLedger", "openAddNewEquipmentLedgerDrawer", "exportEquipmentLedger"])
+async function handleFilterEquipmentLedger() {
+  startLoading();
+  await sleep(1);
+  filterEquipmentLedger();
+  endLoading();
+}
 </script>
 <template>
   <el-form :model="filterForm" label-suffix=":" inline size="small" class="narrow-items mb-0">
@@ -40,7 +47,7 @@ defineProps(["filterForm", "queryEquipmentLedger", "openAddNewEquipmentLedgerDra
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="queryEquipmentLedger()">查询</el-button>
+      <el-button type="primary" @click="handleFilterEquipmentLedger()">查询</el-button>
       <el-button type="primary" @click="openAddNewEquipmentLedgerDrawer()">新增</el-button>
       <el-button type="primary" @click="exportEquipmentLedger()">导出</el-button>
     </el-form-item>
