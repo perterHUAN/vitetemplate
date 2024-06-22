@@ -1,21 +1,21 @@
 <script setup>
-import { reactive} from "vue";
 import {equipmentLedgerManagementData} from "@/data/equipmentLedgerManagementData";
-import useFilterEquipmentLedgerManagementData from "../hooks/useFilterEquipmentLedgerManagementData";
 import {
   filterFormFields,
 } from "@/data/filterFormSettings"
 import useLoading from "../hooks/useLoading";
-import EquipmentLedgerTable from "../components/EquipmentLedgerManagement/EquipmentLedgerTable.vue"
-import AddNewEquipmentLedgerDrawer from "../components/EquipmentLedgerManagement/AddNewEquipmentLedgerDrawer.vue";
-import EquipmentLedgerControl from "@/components/EquipmentLedgerManagement/EquipmentLedgerControl.vue";
-import EditEquipmentLedgerDrawer from "@/components/EquipmentLedgerManagement/EditEquipmentLedgerDrawer.vue";
-import useDrawer from "@/hooks/useDrawer";
+import {
+  EquipmentLedgerTable,
+  AddNewEquipmentLedgerDrawer,
+  EquipmentLedgerControl,
+  EditEquipmentLedgerDrawer
+} from "@/components/EquipmentLedgerManagement"
+import {useDrawer, useFilterEquipmentLedgerManagementData} from "@/hooks"
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const [loading, startLoading, endLoading] = useLoading();
 
-const filterForm = reactive(filterFormFields);
+const filterForm = ref(filterFormFields);
 const [showAddNewEquipmentLedgerDrawer, closeAddNewEquipmentLedgerDrawer, openAddNewEquipmentLedgerDrawer ] = useDrawer();
 const [showEditEquipmentLedgerDrawer,closeEditEquipmentLedgerDrawer,openEditEquipmentLedgerDrawer] = useDrawer();
 
@@ -53,9 +53,11 @@ function addNewEquipmentLedger(newEquipmentLedger) {
   console.log("添加新数据");
   equipmentLedgerManagementData.push(newEquipmentLedger);
 }
+// 查询  直接通过import导入
+
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果 filter
-
+  console.log("filteredEquipmentLedgerManagementData: ", filteredEquipmentLedgerManagementData.value);
 }
 
 
@@ -63,7 +65,7 @@ function handleEdit(idx, row) {
   // todo: 编辑当前行
   console.log("edit current row: ", idx, row);
   setEditingEquipmentLedgerForm({...toRaw(row)});
-  console.log("handleEdit: editingEquipmentLedgerForm: ", editingEquipmentLedgerForm.value);
+  console.log("handleEdit: editingEquipmentLedgerForm: ", JSON.stringify(editingEquipmentLedgerForm.value));
   openEditEquipmentLedgerDrawer();
 }
 

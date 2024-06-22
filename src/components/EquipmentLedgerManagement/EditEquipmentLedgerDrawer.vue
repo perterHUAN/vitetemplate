@@ -6,7 +6,7 @@ import {
 import {
   belongedCompanySelections,
   equipmentTypeSelections,
-  equipmentStatusSelections, newEquipmentLedgerFormFields
+  equipmentStatusSelections
 } from "@/data/newEquipmentLedgerSettings";
 import {UploadFilled} from '@element-plus/icons-vue'
 import {ref} from "vue";
