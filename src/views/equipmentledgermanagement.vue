@@ -63,7 +63,7 @@ function handleEdit(idx, row) {
   // todo: 编辑当前行
   console.log("edit current row: ", idx, row);
   setEditingEquipmentLedgerForm({...toRaw(row)});
-  console.log("handleEdit: editingEquipmentLedgerForm: ", editingEquipmentLedgerForm);
+  console.log("handleEdit: editingEquipmentLedgerForm: ", editingEquipmentLedgerForm.value);
   openEditEquipmentLedgerDrawer();
 }
 
