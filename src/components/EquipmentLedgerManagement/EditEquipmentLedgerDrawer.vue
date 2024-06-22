@@ -11,8 +11,6 @@ import {
 import {UploadFilled} from '@element-plus/icons-vue'
 import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import sleep from "../../utils/sleep";
-import extractEditedEquipmentLedgerFormData from "@/utils/extractEidtedEquipmentLedgerFormData";
 import Service from "@/mock/service.js";
 
 const showEditEquipmentLedgerDrawer = defineModel("showEditEquipmentLedgerDrawer")

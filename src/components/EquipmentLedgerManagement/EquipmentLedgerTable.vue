@@ -1,7 +1,52 @@
 <script setup>
 import {e2c, equipmentLedgerManagementDataFormColumnStyle} from "@/data/equipmentLedgerManagementData"
+import {ElMessage, ElMessageBox} from "element-plus";
+import Service from "@/mock/service";
+import {sleep} from "@/utils"
 
-defineProps(["filteredEquipmentLedgerManagementData", "handleDelete", "handleEdit"])
+const {
+  setEditingEquipmentLedgerForm,
+  openEditEquipmentLedgerDrawer,
+    startLoading,
+    endLoading,
+  deleteLocalEquipmentLedgerManagementData
+} = defineProps(["openEditEquipmentLedgerDrawer","startLoading", "endLoading","deleteLocalEquipmentLedgerManagementData", "setEditingEquipmentLedgerForm", "filteredEquipmentLedgerManagementData"])
+
+function handleEdit(idx, row) {
+  // todo: 编辑当前行
+  setEditingEquipmentLedgerForm({...toRaw(row)});
+  openEditEquipmentLedgerDrawer();
+}
+
+async function handleDelete(idx, row) {
+  // todo: 删除当前行
+  console.log("delete current row: ", idx, row);
+  // 提示信息
+  ElMessageBox.confirm(
+      "你确定要删除该项设备台账记录吗?",
+      "警告",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }
+  ).then(async () => {
+    startLoading();
+    await sleep(1);
+    // const response = await Service.deleteEquipmentLedger(row.id);
+    endLoading();
+    deleteLocalEquipmentLedgerManagementData(row.id);
+    ElMessage({
+      type: "success",
+      message: "删除成功"
+    })
+  }).catch(() => {
+    ElMessage({
+      type: "info",
+      message: "删除失败"
+    })
+  })
+}
 </script>
 <template>
   <el-table

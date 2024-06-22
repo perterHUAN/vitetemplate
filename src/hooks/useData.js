@@ -4,7 +4,7 @@ function useData() {
         localData = newData;
     }
     function deleteData(id) {
-        localData = localData.filter(item => item.id === id);
+        localData = localData.filter(item => item.id !== id);
     }
     function addData(newData) {
         localData.push(newData);

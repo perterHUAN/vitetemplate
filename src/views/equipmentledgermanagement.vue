@@ -9,7 +9,6 @@ import {
   EditEquipmentLedgerDrawer
 } from "@/components/EquipmentLedgerManagement"
 import {useDrawer, useFilterEquipmentLedgerManagementData, useData, useLoading} from "@/hooks"
-import {ElMessage, ElMessageBox} from "element-plus";
 import Service from "@/mock/service";
 import {onMounted} from "vue";
 
@@ -20,8 +19,13 @@ const [showAddNewEquipmentLedgerDrawer, closeAddNewEquipmentLedgerDrawer, openAd
 const [showEditEquipmentLedgerDrawer, closeEditEquipmentLedgerDrawer, openEditEquipmentLedgerDrawer] = useDrawer();
 
 // 本地缓存，不是每次查询都发起请求。
-let localEquipmentLedgerManagementData = [];
-const [addLocalEquipmentLedgerManagementData, deleteLocalEquipmentLedgerManagementData, updateLocalEquipmentLedgerManagementData, getLocalEquipmentLedgerManagementData, setLocalEquipmentLedgerManagementData] = useData();
+const [
+      addLocalEquipmentLedgerManagementData,
+      deleteLocalEquipmentLedgerManagementData,
+      updateLocalEquipmentLedgerManagementData,
+      getLocalEquipmentLedgerManagementData,
+      setLocalEquipmentLedgerManagementData
+  ] = useData();
 onMounted(async () => {
   startLoading();
   const response = await Service.queryAll();
@@ -49,44 +53,6 @@ function exportEquipmentLedger() {
   console.log("filteredEquipmentLedgerManagementData: ", filteredEquipmentLedgerManagementData.value);
 }
 
-
-function handleEdit(idx, row) {
-  // todo: 编辑当前行
-  console.log("edit current row: ", idx, row);
-  setEditingEquipmentLedgerForm({...toRaw(row)});
-  console.log("handleEdit: editingEquipmentLedgerForm: ", JSON.stringify(editingEquipmentLedgerForm.value));
-  openEditEquipmentLedgerDrawer();
-}
-
-function handleDelete(idx, row) {
-  // todo: 删除当前行
-  console.log("delete current row: ", idx, row);
-  // 提示信息
-  ElMessageBox.confirm(
-      "你确定要删除该项设备台账记录吗?",
-      "警告",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }
-  ).then(() => {
-    deleteEquipmentLedger(row.id);
-
-    ElMessage({
-      type: "success",
-      message: "删除成功"
-    })
-    queryEquipmentLedger();
-  }).catch(() => {
-    ElMessage({
-      type: "info",
-      message: "删除失败"
-    })
-  })
-}
-
-
 </script>
 <template>
   <el-container class="h-full" v-loading="loading">
@@ -103,7 +69,12 @@ function handleDelete(idx, row) {
     <el-main class="pt-0 -mt-10">
       <h2 class="text-center text-small">设备台账管理</h2>
       <EquipmentLedgerTable :filteredEquipmentLedgerManagementData="filteredEquipmentLedgerManagementData"
-                            :handleEdit="handleEdit" :handleDelete="handleDelete"/>
+                            :setEditingEquipmentLedgerForm="setEditingEquipmentLedgerForm"
+                            :openEditEquipmentLedgerDrawer="openEditEquipmentLedgerDrawer"
+                            :deleteLocalEquipmentLedgerManagementData="deleteLocalEquipmentLedgerManagementData"
+                            :startLoading="startLoading"
+                            :endLoading="endLoading"
+                            />
     </el-main>
   </el-container>
 
