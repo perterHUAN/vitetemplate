@@ -1,8 +1,8 @@
-import generateRandomId from "@/utils/generateRandomId";
 import {dayjs} from "element-plus";
 
-function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
+function extractEditedEquipmentLedgerFormData(editedEquipmentLedgerForm) {
     const {
+        id,
         majorEquipmentCategory,
         equipmentName,
         equipmentType,
@@ -15,8 +15,7 @@ function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
         nextInspectionDate,
         dateOfCommissioning,
         equipmentStatus,
-        remark
-    } = newEquipmentLedgerForm;
+    } = editedEquipmentLedgerForm;
 
     const result = {
         createDate: dayjs().format("YYYY-MM-HH"),
@@ -32,10 +31,11 @@ function extractNewEquipmentLedgerFormData(newEquipmentLedgerForm) {
         nextInspectionDate,
         dateOfCommissioning,
         equipmentStatus,
-        id: generateRandomId()
+        id
     }
-    console.log("result: ", result);
+    console.log("edite result: ", result);
     return result;
+
 }
 
-export default extractNewEquipmentLedgerFormData;
+export default extractEditedEquipmentLedgerFormData;

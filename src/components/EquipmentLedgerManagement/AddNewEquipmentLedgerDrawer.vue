@@ -53,7 +53,6 @@ async function saveNewEquipmentLedger(formInstance) {
         duration: 1000
       })
 
-      // showAddNewEquipmentLedgerDrawer.value = false;
       closeAddNewEquipmentLedgerDrawer();
       formInstance.resetFields();
     } else {

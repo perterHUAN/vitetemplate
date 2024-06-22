@@ -1,6 +1,8 @@
 export const equipmentLedgerManagementData = [
     {
         id: 1,
+        remark: "",
+        createDate: "2021-08-19",
         majorEquipmentCategory: "提升系统",
         equipmentName: "固定式井架",
         equipmentType: null,
@@ -16,6 +18,8 @@ export const equipmentLedgerManagementData = [
     },
     {
         id: 2,
+        remark: "",
+        createDate: "2021-08-19",
         majorEquipmentCategory: "修井设备",
         equipmentName: "量表",
         equipmentType: null,
@@ -31,6 +35,8 @@ export const equipmentLedgerManagementData = [
     },
     {
         id: 3,
+        remark: "",
+        createDate: "2021-08-19",
         majorEquipmentCategory: "提升吊具",
         equipmentName: "密度计",
         equipmentType: null,
@@ -46,6 +52,8 @@ export const equipmentLedgerManagementData = [
     },
     {
         id: 4,
+        remark: "",
+        createDate: "2021-08-19",
         majorEquipmentCategory: "修井设备",
         equipmentName: "密度计",
         equipmentType: null,
@@ -61,6 +69,8 @@ export const equipmentLedgerManagementData = [
     },
     {
         id: 5,
+        remark: "",
+        createDate: "2021-08-19",
         majorEquipmentCategory: "修井设备",
         equipmentName: "密度计",
         equipmentType: null,
@@ -119,12 +129,12 @@ export const equipmentLedgerManagementDataFormColumnStyle = {
     lastInspectionDate: {
         align: "center",
         headerAlign: "center",
-        width: ""
+        width: "100px"
     },
     nextInspectionDate: {
         align: "center",
         headerAlign: "center",
-        width: ""
+        width: "100px"
     },
     dateOfCommissioning: {
         align: "center",

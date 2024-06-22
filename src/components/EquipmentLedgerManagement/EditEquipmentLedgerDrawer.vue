@@ -9,10 +9,10 @@ import {
   equipmentStatusSelections, newEquipmentLedgerFormFields
 } from "@/data/newEquipmentLedgerSettings";
 import {UploadFilled} from '@element-plus/icons-vue'
-import { ref} from "vue";
+import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import sleep from "../../utils/sleep";
-import extractNewEquipmentLedgerFormData from "../../utils/extractNewEquipmentLedgerFormData";
+import extractEditedEquipmentLedgerFormData from "@/utils/extractEidtedEquipmentLedgerFormData";
 
 const showEditEquipmentLedgerDrawer = defineModel("showEditEquipmentLedgerDrawer")
 const {
@@ -49,20 +49,30 @@ async function saveEditedEquipmentLedger(formInstance) {
       console.log("submit");
       // todo: 需要对表单数据进行处理
 
-      postEditedEquipmentLedger(extractNewEquipmentLedgerFormData(editingEquipmentLedgerForm));
-      // 模拟: 上传加载，提示上传成功，然后关闭drawer
-      startLoading();
-      await sleep(1);
-      endLoading();
+      try {
+        console.log("editingEquipmentLedgerForm: ", editingEquipmentLedgerForm);
+        postEditedEquipmentLedger(extractEditedEquipmentLedgerFormData(editingEquipmentLedgerForm));
+        // 模拟: 上传加载，提示上传成功，然后关闭drawer
+        startLoading();
+        await sleep(1);
+        endLoading();
 
-      ElMessage({
-        message: "设备台账修改成功，您现在可以点击查询获取最新的数据了!",
-        type: "success",
-        duration: 1000
-      })
+        ElMessage({
+          message: "设备台账修改成功，您现在可以点击查询获取最新的数据了!",
+          type: "success",
+          duration: 1000
+        })
 
-      closeEditEquipmentLedgerDrawer();
-      formInstance.resetFields();
+        closeEditEquipmentLedgerDrawer();
+        formInstance.resetFields();
+      } catch (error) {
+        ElMessage({
+          message: `设备台账修改失败 ${error.message}`,
+          type: "error",
+          duration: 1000
+        })
+      }
+
     } else {
       // 提示验证失败
       console.log("error submit", fields);
@@ -131,7 +141,7 @@ const editingEquipmentLedgerRules = {
         class="remove-el-drawer-header-margin-bottom"
     >
       <template #header>
-        <h2 class="text-center font-normal my-0 text-small">设备台账新增</h2>
+        <h2 class="text-center font-normal my-0 text-small">设备台账编辑</h2>
       </template>
       <el-form ref="editingEquipmentLedgerFormRef" :model="editingEquipmentLedgerForm" size="small" label-width="auto"
                :rules="editingEquipmentLedgerRules">
@@ -247,7 +257,7 @@ const editingEquipmentLedgerRules = {
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="note">
-              <el-input type="textarea" :rows="4"></el-input>
+              <el-input type="textarea" :rows="4" v-model="editingEquipmentLedgerForm.note"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -273,11 +283,11 @@ const editingEquipmentLedgerRules = {
           </el-col>
         </el-row>
         <el-row justify="end">
-            <el-form-item>
-              <el-button type="primary" @click="saveEditedEquipmentLedger(editingEquipmentLedgerFormRef)">保存
-              </el-button>
-              <el-button @click="cancelSaveEditedEquipmentLedger(editingEquipmentLedgerFormRef)">取消</el-button>
-            </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="saveEditedEquipmentLedger(editingEquipmentLedgerFormRef)">保存
+            </el-button>
+            <el-button @click="cancelSaveEditedEquipmentLedger(editingEquipmentLedgerFormRef)">取消</el-button>
+          </el-form-item>
         </el-row>
       </el-form>
     </el-drawer>

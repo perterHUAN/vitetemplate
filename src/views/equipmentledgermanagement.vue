@@ -20,7 +20,10 @@ const [showAddNewEquipmentLedgerDrawer, closeAddNewEquipmentLedgerDrawer, openAd
 const [showEditEquipmentLedgerDrawer,closeEditEquipmentLedgerDrawer,openEditEquipmentLedgerDrawer] = useDrawer();
 
 // 当前编辑的台账信息
-let editingEquipmentLedgerForm = null;
+const editingEquipmentLedgerForm = ref();
+function setEditingEquipmentLedgerForm(newValue) {
+  editingEquipmentLedgerForm.value = newValue;
+}
 // 过滤功能
 const [filteredEquipmentLedgerManagementData, queryEquipmentLedger] = useFilterEquipmentLedgerManagementData(filterForm, equipmentLedgerManagementData);
 queryEquipmentLedger();
@@ -44,6 +47,12 @@ function deleteEquipmentLedger(id) {
   }
 }
 
+function addNewEquipmentLedger(newEquipmentLedger) {
+  // todo: 添加新数据
+  // 模拟上传到服务端数据库
+  console.log("添加新数据");
+  equipmentLedgerManagementData.push(newEquipmentLedger);
+}
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果 filter
 
@@ -53,7 +62,8 @@ function exportEquipmentLedger() {
 function handleEdit(idx, row) {
   // todo: 编辑当前行
   console.log("edit current row: ", idx, row);
-  editingEquipmentLedgerForm = row;
+  setEditingEquipmentLedgerForm({...toRaw(row)});
+  console.log("handleEdit: editingEquipmentLedgerForm: ", editingEquipmentLedgerForm);
   openEditEquipmentLedgerDrawer();
 }
 
@@ -85,10 +95,7 @@ function handleDelete(idx, row) {
   })
 }
 
-function addNewEquipmentLedger(newEquipmentLedger) {
-  // 模拟上传到服务端数据库
-  equipmentLedgerManagementData.push(newEquipmentLedger);
-}
+
 
 </script>
 <template>
