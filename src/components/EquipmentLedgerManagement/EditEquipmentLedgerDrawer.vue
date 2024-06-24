@@ -14,19 +14,34 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import Service from "@/mock/service.js";
 
 const showEditEquipmentLedgerDrawer = defineModel("showEditEquipmentLedgerDrawer")
-const {
-  startLoading,
-  endLoading,
-  editingEquipmentLedgerForm,
-  closeEditEquipmentLedgerDrawer,
-  updateLocalEquipmentLedgerManagementData
-} = defineProps([
+// const {
+//   startLoading,
+//   endLoading,
+//   editingEquipmentLedgerForm,
+//   closeEditEquipmentLedgerDrawer,
+//   updateLocalEquipmentLedgerManagementData
+// } = defineProps([
+//   "startLoading",
+//   "endLoading",
+//   "editingEquipmentLedgerForm",
+//   "closeEditEquipmentLedgerDrawer",
+//   "updateLocalEquipmentLedgerManagementData"
+// ])
+
+const prop = defineProps([
   "startLoading",
   "endLoading",
   "editingEquipmentLedgerForm",
   "closeEditEquipmentLedgerDrawer",
   "updateLocalEquipmentLedgerManagementData"
 ])
+
+const {
+  startLoading,
+  endLoading,
+  closeEditEquipmentLedgerDrawer,
+  updateLocalEquipmentLedgerManagementData
+} = prop;
 const editingEquipmentLedgerFormRef = ref(null);
 
 function handleCloseEditEquipmentLedgerDrawer(done) {
@@ -49,11 +64,14 @@ async function saveEditedEquipmentLedger(formInstance) {
       // todo: 需要对表单数据进行处理
 
       try {
-        console.log("editingEquipmentLedgerForm: ", editingEquipmentLedgerForm);
+        console.log("editingEquipmentLedgerForm: ", prop.editingEquipmentLedgerForm);
         // 模拟: 上传加载，提示上传成功，然后关闭drawer
         startLoading();
-        const response = await Service.postEditedEquipmentLedger(editingEquipmentLedgerForm);
+        const response = await Service.postEditedEquipmentLedger(toRaw(prop.editingEquipmentLedgerForm));
+        console.log("after service postEditedEquipmentLedger");
+        console.log("response data: ", response.data);
         updateLocalEquipmentLedgerManagementData(response.data);
+        console.log("after updateLocalEquipmentLedgerManagementData");
         endLoading();
 
         ElMessage({

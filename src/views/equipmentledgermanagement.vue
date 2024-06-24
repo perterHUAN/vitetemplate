@@ -41,7 +41,7 @@ onMounted(async () => {
 const editingEquipmentLedgerForm = ref({});
 
 function setEditingEquipmentLedgerForm(newValue) {
-  editingEquipmentLedgerForm.value = newValue;
+  editingEquipmentLedgerForm.value = toRaw(newValue);
   console.log("setEditingEquipmentLedgerForm: ", editingEquipmentLedgerForm.value);
 }
 

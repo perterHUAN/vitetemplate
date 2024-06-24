@@ -12,12 +12,15 @@ async function postEditedEquipmentLedger(editedEquipmentLedger) {
     // todo: 递交修改
     await sleep(1);
     // 删除原来的，添加新的
+    console.log("call extractEditedEquipmentLedgerFormData");
     editedEquipmentLedger = extractEditedEquipmentLedgerFormData(editedEquipmentLedger);
+    console.log("after extractEditedEquipmentLedgerFormData");
     const deletedIndex = equipmentLedgerManagementData.findIndex(e => e.id === editedEquipmentLedger.id);
+    console.log("deletedIndex: ", deletedIndex, equipmentLedgerManagementData, editedEquipmentLedger);
+    return {status: 200, data: JSON.parse(JSON.stringify(editedEquipmentLedger))}
     if(!deletedIndex) return; // 不存在，直接终止
-    equipmentLedgerManagementData.splice(deletedIndex, 1);
-    equipmentLedgerManagementData.push(editedEquipmentLedger);
-
+    equipmentLedgerManagementData.splice(deletedIndex, 1, editedEquipmentLedger);
+    console.log("postEditedEquipmentLedger complete");
     return {status: 200, data: JSON.parse(JSON.stringify(editedEquipmentLedger))}
 }
 
