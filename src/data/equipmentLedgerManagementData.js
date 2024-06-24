@@ -161,3 +161,7 @@ export const e2c = {
     dateOfCommissioning: "投产日期",
     equipmentStatus: "设备状态"
 }
+
+const e2cEntries = Object.entries(e2c);
+export const equipmentLedgerMangementDataExcelExportHeaders = e2cEntries.map(e => e[1]);
+export const equipmentLedgerMangementDataExcelExportFields = e2cEntries.map(e => e[0]);

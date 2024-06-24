@@ -33,7 +33,7 @@ async function handleDelete(idx, row) {
   ).then(async () => {
     startLoading();
     await sleep(1);
-    // const response = await Service.deleteEquipmentLedger(row.id);
+    const response = await Service.deleteEquipmentLedger(row.id);
     endLoading();
     deleteLocalEquipmentLedgerManagementData(row.id);
     ElMessage({

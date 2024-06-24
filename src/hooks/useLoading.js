@@ -7,6 +7,7 @@ function useLoading() {
     }
     function startLoading() {
         loading.value = true;
+        setTimeout(() => loading.value = false, 5000);
     }
     return [loading, startLoading, endLoading]
 }

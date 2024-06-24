@@ -2,6 +2,7 @@
 import {
   filterFormFields,
 } from "@/data/filterFormSettings"
+import {equipmentLedgerMangementDataExcelExportHeaders, equipmentLedgerMangementDataExcelExportFields} from "@/data/equipmentLedgerManagementData";
 import {
   EquipmentLedgerTable,
   AddNewEquipmentLedgerDrawer,
@@ -11,6 +12,7 @@ import {
 import {useDrawer, useFilterEquipmentLedgerManagementData, useData, useLoading} from "@/hooks"
 import Service from "@/mock/service";
 import {onMounted} from "vue";
+import {gfxdc} from "@/utils/ExportUtil";
 
 const [loading, startLoading, endLoading] = useLoading();
 
@@ -51,6 +53,18 @@ filterEquipmentLedger();
 function exportEquipmentLedger() {
   // todo: 导出当前的查询结果 filter
   console.log("filteredEquipmentLedgerManagementData: ", filteredEquipmentLedgerManagementData.value);
+  const title = "设备台账管理"
+
+  // const header = [
+  //   ['序号', '督查室', '直属单位', '基层单位', '施工单位', '作业地点', '作业类型', '级别', '作业内容', '督查方式', '督查人员', '存在问题'],
+  // ]
+  const header = [
+      equipmentLedgerMangementDataExcelExportHeaders
+  ]
+  // const fields = ['xh', 'dcs', 'zsdw', 'jcdw', 'sgdw', 'zydd', 'zylx', 'jb', 'zynr', 'dcfsmc', 'dcry', 'czwt']
+  const fields = equipmentLedgerMangementDataExcelExportFields;
+  const merges = ["A1:L1"]
+  gfxdc.ExcelExport(title, header, filteredEquipmentLedgerManagementData.value, fields, merges)
 }
 
 </script>

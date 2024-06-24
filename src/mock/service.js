@@ -8,9 +8,9 @@ async function queryAll() {
 }
 
 async function postEditedEquipmentLedger(editedEquipmentLedger) {
+    console.log("递交修改待完成....", editedEquipmentLedger);
     // todo: 递交修改
     await sleep(1);
-    console.log("递交修改待完成....");
     // 删除原来的，添加新的
     editedEquipmentLedger = extractEditedEquipmentLedgerFormData(editedEquipmentLedger);
     const deletedIndex = equipmentLedgerManagementData.findIndex(e => e.id === editedEquipmentLedger.id);
