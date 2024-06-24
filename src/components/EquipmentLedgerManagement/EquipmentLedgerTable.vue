@@ -3,6 +3,7 @@ import {e2c, equipmentLedgerManagementDataFormColumnStyle} from "@/data/equipmen
 import {ElMessage, ElMessageBox} from "element-plus";
 import Service from "@/mock/service";
 import {sleep} from "@/utils"
+import {toRaw} from "vue";
 
 const {
   setEditingEquipmentLedgerForm,

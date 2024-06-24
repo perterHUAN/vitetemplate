@@ -17,14 +17,12 @@ const showEditEquipmentLedgerDrawer = defineModel("showEditEquipmentLedgerDrawer
 const {
   startLoading,
   endLoading,
-  postEditedEquipmentLedger,
   editingEquipmentLedgerForm,
   closeEditEquipmentLedgerDrawer,
   updateLocalEquipmentLedgerManagementData
 } = defineProps([
   "startLoading",
   "endLoading",
-  "postEditedEquipmentLedger",
   "editingEquipmentLedgerForm",
   "closeEditEquipmentLedgerDrawer",
   "updateLocalEquipmentLedgerManagementData"

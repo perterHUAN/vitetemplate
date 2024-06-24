@@ -38,10 +38,11 @@ onMounted(async () => {
 })
 
 // 当前编辑的台账信息
-const editingEquipmentLedgerForm = ref();
+const editingEquipmentLedgerForm = ref({});
 
 function setEditingEquipmentLedgerForm(newValue) {
   editingEquipmentLedgerForm.value = newValue;
+  console.log("setEditingEquipmentLedgerForm: ", editingEquipmentLedgerForm.value);
 }
 
 // 过滤功能
